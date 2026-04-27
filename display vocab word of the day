@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbum Diei</title>
+    <style>
+        /* Styles to make it look great inside Notion */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: transparent; /* Blends with Notion */
+            color: #37352f; /* Notion's default text color */
+        }
+        .widget-container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            background-color: #f7f6f3; /* Notion's light gray background */
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #787774;
+            margin-bottom: 10px;
+        }
+        .word {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+        }
+        .definition {
+            font-size: 14px;
+            font-style: italic;
+            color: #37352f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="widget-container">
+        <div class="title">Verbum Diei</div>
+        <div class="word" id="latin-word">Loading...</div>
+        <div class="definition" id="latin-def">Loading...</div>
+    </div>
+
+    <script>
+        // Your custom dictionary (Notice we included the principal parts/endings!)
+        const latinWords = [
+            { word: "Discere", def: "To learn (disco, discere, didici)" },
+            { word: "Sapientia", def: "Wisdom (sapientia, sapientiae, f.)" },
+            { word: "Virtus", def: "Courage, excellence (virtus, virtutis, f.)" },
+            { word: "Scribere", def: "To write (scribo, scribere, scripsi, scriptum)" },
+            { word: "Lumen", def: "Light (lumen, luminis, n.)" },
+            { word: "Tempus", def: "Time (tempus, temporis, n.)" },
+            { word: "Civis", def: "Citizen (civis, civis, m/f)" }
+        ];
+
+        // The math trick to get a unique number for today's date
+        const today = new Date();
+        const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
+        
+        // Pick a word based on the day (loops back to start when it reaches the end)
+        const wordIndex = daysSinceEpoch % latinWords.length;
+        const wordOfTheDay = latinWords[wordIndex];
+
+        // Push the word to the HTML
+        document.getElementById('latin-word').innerText = wordOfTheDay.word;
+        document.getElementById('latin-def').innerText = wordOfTheDay.def;
+    </script>
+
+</body>
+</html>
