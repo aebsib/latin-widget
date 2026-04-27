@@ -12,15 +12,15 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: transparent; /* Blends with Notion */
-            color: #37352f; /* Notion's default text color */
+            background-color: transparent;
+            color: #37352f;
         }
         .widget-container {
             text-align: center;
             padding: 20px;
             border: 1px solid #e1e1e1;
             border-radius: 10px;
-            background-color: #f7f6f3; /* Notion's light gray background */
+            background-color: #f7f6f3;
             width: 100%;
             max-width: 300px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
@@ -48,66 +48,29 @@
 
     <div class="widget-container">
         <div class="title">Verbum Diei</div>
-        <!-- Changed this text slightly so you know it's trying to connect to the internet -->
-        <div class="word" id="latin-word">Fetching online...</div>
-        <div class="definition" id="latin-def">Please wait</div>
+        <div class="word" id="latin-word">Loading...</div>
+        <div class="definition" id="latin-def">Loading...</div>
     </div>
 
     <script>
-        // 1. PASTE YOUR PUBLISHED GOOGLE SHEET TSV LINK HERE:
-        // Keep the single quotes around the link!
-        const sheetURL = 'YOUR_GOOGLE_SHEET_TSV_URL_HERE';
+        const latinWords = [
+            { word: "Discere", def: "To learn (disco, discere, didici)" },
+            { word: "Sapientia", def: "Wisdom (sapientia, sapientiae, f.)" },
+            { word: "Virtus", def: "Courage, excellence (virtus, virtutis, f.)" },
+            { word: "Scribere", def: "To write (scribo, scribere, scripsi, scriptum)" },
+            { word: "Lumen", def: "Light (lumen, luminis, n.)" },
+            { word: "Tempus", def: "Time (tempus, temporis, n.)" },
+            { word: "Civis", def: "Citizen (civis, civis, m/f)" }
+        ];
 
-        async function fetchWordOfTheDay() {
-            try {
-                // Fetch the data from your Google Sheet
-                const response = await fetch(sheetURL);
-                const data = await response.text();
+        const today = new Date();
+        const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
+        
+        const wordIndex = daysSinceEpoch % latinWords.length;
+        const wordOfTheDay = latinWords[wordIndex];
 
-                // Split the data into rows (skipping the first header row)
-                const rows = data.split('\n').slice(1);
-                
-                const latinWords = [];
-                
-                // Go through each row and separate the Word and Definition
-                rows.forEach(row => {
-                    const columns = row.split('\t'); // Split by Tab
-                    // Make sure the row actually has data before adding it
-                    if (columns.length >= 2 && columns[0].trim() !== '') {
-                        latinWords.push({ 
-                            word: columns[0].trim(), 
-                            def: columns[1].trim() 
-                        });
-                    }
-                });
-
-                // Fallback just in case the sheet is empty or didn't load right
-                if (latinWords.length === 0) {
-                    throw new Error("No words found in the sheet.");
-                }
-
-                // The math trick to get a unique number for today's date
-                const today = new Date();
-                const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
-                
-                // Pick the word based on the date
-                const wordIndex = daysSinceEpoch % latinWords.length;
-                const wordOfTheDay = latinWords[wordIndex];
-
-                // Push the word to the Notion screen
-                document.getElementById('latin-word').innerText = wordOfTheDay.word;
-                document.getElementById('latin-def').innerText = wordOfTheDay.def;
-
-            } catch (error) {
-                // If something goes wrong, show an error message
-                document.getElementById('latin-word').innerText = "Error";
-                document.getElementById('latin-def').innerText = "Check Google Sheet link.";
-                console.error(error);
-            }
-        }
-
-        // Run the fetching process as soon as the widget loads
-        fetchWordOfTheDay();
+        document.getElementById('latin-word').innerText = wordOfTheDay.word;
+        document.getElementById('latin-def').innerText = wordOfTheDay.def;
     </script>
 
 </body>
