@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verbum Diei</title>
     <style>
-        /* Styles to make it look great inside Notion */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             display: flex;
@@ -54,7 +53,6 @@
     </div>
 
     <script>
-        // Your custom dictionary (Notice we included the principal parts/endings!)
         const latinWords = [
             { word: "Discere", def: "To learn (disco, discere, didici)" },
             { word: "Sapientia", def: "Wisdom (sapientia, sapientiae, f.)" },
@@ -65,15 +63,13 @@
             { word: "Civis", def: "Citizen (civis, civis, m/f)" }
         ];
 
-        // The math trick to get a unique number for today's date
+    
         const today = new Date();
         const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
         
-        // Pick a word based on the day (loops back to start when it reaches the end)
         const wordIndex = daysSinceEpoch % latinWords.length;
         const wordOfTheDay = latinWords[wordIndex];
 
-        // Push the word to the HTML
         document.getElementById('latin-word').innerText = wordOfTheDay.word;
         document.getElementById('latin-def').innerText = wordOfTheDay.def;
     </script>
